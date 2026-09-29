@@ -1,0 +1,31 @@
+# Nemotron 3.5 Lightning BF16 pretraining from random initialization.
+# DATA_PREFIX is set by lightning35.sh to the in-container filename prefix.
+model:
+  id: nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16
+  seq_length: 8192
+  tensor_parallel: 1
+  pipeline_parallel: 1
+  context_parallel: 2
+  expert_parallel: 8
+
+dataset:
+  prefix: ${DATA_PREFIX}
+  split: "100,0,0"
+  num_workers: 1
+
+training:
+  iterations: 20
+  micro_batch_size: 1
+  global_batch_size: 512
+  seed: 1234
+
+optimizer:
+  lr: 3.0e-4
+  min_lr: 3.0e-5
+  warmup_iters: 8
+
+checkpoint:
+  save_interval: 10
+
+logging:
+  log_interval: 1
